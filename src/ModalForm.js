@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import "./ModalForm.css";
 
 const ModalForm = () => {
   const [showModal, setShowModal] = useState(false);
@@ -29,15 +29,15 @@ const ModalForm = () => {
       return;
     }
 
-    if (phone.length !== 10 || isNaN(phone)) {
-      alert("Invalid phone number. Please enter a 10-digit phone number.");
+    if (!/^\d{10}$/.test(phone)) {
+      alert("Invalid phone number. Please enter a valid 10-digit phone number.");
       return;
     }
 
     const currentDate = new Date();
     const selectedDate = new Date(dob);
 
-    if (selectedDate > currentDate) {
+    if (!dob || selectedDate > currentDate) {
       alert("Invalid date of birth. Date of birth cannot be in the future.");
       return;
     }
@@ -47,7 +47,7 @@ const ModalForm = () => {
   };
 
   const closeModal = (e) => {
-    if (e.target.className === "modal") {
+    if (e.target.classList.contains("modal")) {
       setShowModal(false);
     }
   };
