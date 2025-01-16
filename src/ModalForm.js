@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import "./ModalForm.css";
+import "./ModalForm.css"; 
 
-const ModalForm = ({ isOpen, onClose }) => {
+const ModalForm = () => {
+  const [isOpen, setIsOpen] = useState(false);
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -9,53 +10,117 @@ const ModalForm = ({ isOpen, onClose }) => {
     dob: "",
   });
 
+  const openModal = () => setIsOpen(true);
+  const closeModal = () => setIsOpen(false);
+
   const handleChange = (e) => {
     const { id, value } = e.target;
-    setFormData({ ...formData, [id]: value });
+    setFormData((prev) => ({
+      ...prev,
+      [id]: value,
+    }));
   };
 
   const validateForm = () => {
     const { username, email, phone, dob } = formData;
 
-    if (!username) return alert("Please fill out the username.");
-    if (!email) return alert("Please fill out the email.");
-    if (!email.includes("@")) return alert("Invalid email. Please check your email address.");
-    if (!phone) return alert("Please fill out the phone number.");
-    if (phone.length !== 10 || isNaN(phone)) return alert("Invalid phone number. Please enter a 10-digit phone number.");
-    if (!dob) return alert("Please fill out the date of birth.");
-    if (new Date(dob) > new Date()) return alert("Invalid date of birth. Date of birth cannot be in the future.");
+    
+    if (!username) {
+      alert("Please fill out the username.");
+      return;
+    }
 
+    
+    if (!email) {
+      alert("Please fill out the email.");
+      return;
+    }
+    if (!email.includes("@")) {
+      alert("Invalid email. Please check your email address.");
+      return;
+    }
+
+    
+    if (!phone) {
+      alert("Please fill out the phone number.");
+      return;
+    }
+    if (phone.length !== 10 || isNaN(phone)) {
+      alert("Invalid phone number. Please enter a 10-digit phone number.");
+      return;
+    }
+
+    
+    if (!dob) {
+      alert("Please fill out the date of birth.");
+      return;
+    }
+    if (new Date(dob) > new Date()) {
+      alert("Invalid date of birth. Date of birth cannot be in the future.");
+      return;
+    }
+
+    // Success
     alert("Form submitted successfully!");
+    setIsOpen(false); 
   };
 
-  if (!isOpen) return null;
-
   return (
-    <div className="modal" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <h2>Fill Details</h2>
-        <form>
-          <label>
-            Username:
-            <input id="username" type="text" value={formData.username} onChange={handleChange} />
-          </label>
-          <label>
-            Email Address:
-            <input id="email" type="email" value={formData.email} onChange={handleChange} />
-          </label>
-          <label>
-            Phone Number:
-            <input id="phone" type="text" value={formData.phone} onChange={handleChange} />
-          </label>
-          <label>
-            Date of Birth:
-            <input id="dob" type="date" value={formData.dob} onChange={handleChange} />
-          </label>
-          <button type="button" className="submit-button" onClick={validateForm}>
-            Submit
-          </button>
-        </form>
-      </div>
+    <div className="modal">
+      <button onClick={openModal} className="open-form-button">
+        Open Form
+      </button>
+
+      {isOpen && (
+        <div className="modal-content" onClick={closeModal}>
+          <div className="form-container" onClick={(e) => e.stopPropagation()}>
+            <h2>Fill Details</h2>
+            <label htmlFor="username">Username:</label>
+            <input
+              type="text"
+              id="username"
+              value={formData.username}
+              onChange={handleChange}
+              required
+            />
+
+            <label htmlFor="email">Email Address:</label>
+            <input
+              type="email"
+              id="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+
+            <label htmlFor="phone">Phone Number:</label>
+            <input
+              type="tel"
+              id="phone"
+              value={formData.phone}
+              onChange={handleChange}
+              required
+            />
+
+            <label htmlFor="dob">Date of Birth:</label>
+            <input
+              type="date"
+              id="dob"
+              value={formData.dob}
+              onChange={handleChange}
+              required
+            />
+
+            <button
+              type="button"
+              className="submit-button"
+              onClick={validateForm}
+            >
+              Submit
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
