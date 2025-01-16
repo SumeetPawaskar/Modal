@@ -1,18 +1,11 @@
-import React, { useState } from "react";
-import ModalForm from "./ModalForm";
-import "./App.css";
+import React from "react";
+import ModalForm from "./ModalForm"; 
 
 const App = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
-
   return (
     <div className="App">
       <h1>User Details Modal</h1>
-      <button onClick={openModal}>Open Form</button>
-      <ModalForm isOpen={isModalOpen} onClose={closeModal} />
+      <ModalForm />
     </div>
   );
 };
